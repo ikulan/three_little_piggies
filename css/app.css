@@ -1,0 +1,68 @@
+body {
+  font-family: Arial;
+  padding: 20px;
+  background: #f1f1f1;
+}
+
+.header {
+  padding: 20px;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+}
+
+.board {
+  border: 3px solid #a4907c;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 20px;
+  flex: 1;
+}
+
+.placement {
+  border: 3px solid #a4907c;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 20px;
+  flex: 1;
+  align-items: center;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(4, 100px);
+  grid-auto-rows: minmax(100px, auto);
+}
+
+.cell {
+  border-radius: 5px;
+  padding: 10px;
+  background-color: rgb(207, 232, 220);
+  border: 2px solid rgb(79, 185, 227);
+}
+
+.cell.invalid {
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border: 2px solid rgb(79, 185, 227);
+}
+
+.cell.occupied {
+  background-color: #a8df8e;
+  border: none;
+}
+
+.cell.house {
+  background-image: url("../assets/imgs/house.png");
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.cell.pig {
+  background-image: url("../assets/imgs/pig.png");
+  background-position: center;
+  background-repeat: no-repeat;
+}

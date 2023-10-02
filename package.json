@@ -1,0 +1,25 @@
+{
+  "name": "three_little_pigs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server",
+    "build": "webpack",
+    "build-prod": "webpack --config webpack.config.prod.js"
+  },
+  "keywords": [
+    "typescript",
+    "board-game"
+  ],
+  "author": "ikulan",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  }
+}
