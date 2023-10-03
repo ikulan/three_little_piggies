@@ -6,7 +6,7 @@ import { Utils } from "../utils/utils";
 export class Block implements Draggable {
   private img_src: string;
   private img_elem: HTMLImageElement;
-  private rotation = 0;
+  private rotation_idx = 0;
 
   constructor(public id: string, width: number) {
     this.img_src = Utils.block_img_path(id);
@@ -19,8 +19,11 @@ export class Block implements Draggable {
   private configure() {
     // Image Rotation on double clicks
     this.img_elem.addEventListener("dblclick", (e) => {
-      this.rotation = (this.rotation + Utils.ROTATION_DEGREE) % 360;
-      this.img_elem.style.transform = `rotate(${this.rotation}deg)`;
+      this.rotation_idx = (this.rotation_idx + 1) % 4;
+      console.log(`rotation_idx: ${this.rotation_idx}`);
+
+      let degree = Utils.rotation_degree(this.rotation_idx);
+      this.img_elem.style.transform = `rotate(${degree}deg)`;
     });
 
     // Draggable
