@@ -1,6 +1,7 @@
-import { Block } from "./block/block";
+import { Block } from "./components/block";
+import { Board } from "./components/board";
 
-const placement = document.querySelector(".placement") as HTMLElement;
+const placement = document.getElementById("placement")!;
 const blocks = [
   new Block("block-1", 300),
   new Block("block-2", 200),
@@ -9,3 +10,5 @@ const blocks = [
 blocks.forEach((b) => {
   placement.appendChild(b.getImage());
 });
+
+new Board();

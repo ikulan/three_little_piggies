@@ -13,7 +13,7 @@ body {
   display: flex;
 }
 
-.board {
+#board {
   border: 3px solid #a4907c;
   border-radius: 5px;
   margin: 5px;
@@ -21,7 +21,7 @@ body {
   flex: 1;
 }
 
-.placement {
+#placement {
   border: 3px solid #a4907c;
   border-radius: 5px;
   margin: 5px;

@@ -1,6 +1,6 @@
 import { autobind } from "../decorators/autobind";
 import { Draggable } from "../models/drag-drop";
-import { Util } from "../utils/util";
+import { Utils } from "../utils/utils";
 
 // house block
 export class Block implements Draggable {
@@ -9,17 +9,17 @@ export class Block implements Draggable {
   private rotation = 0;
 
   constructor(public id: string, width: number) {
-    this.img_src = Util.block_img_path(id);
+    this.img_src = Utils.block_img_path(id);
     this.img_elem = new Image(width);
     this.img_elem.src = this.img_src;
 
     this.configure();
   }
 
-  configure() {
+  private configure() {
     // Image Rotation on double clicks
     this.img_elem.addEventListener("dblclick", (e) => {
-      this.rotation = (this.rotation + Util.rotation_degree) % 360;
+      this.rotation = (this.rotation + Utils.ROTATION_DEGREE) % 360;
       this.img_elem.style.transform = `rotate(${this.rotation}deg)`;
     });
 
@@ -35,7 +35,7 @@ export class Block implements Draggable {
 
   @autobind
   dragStartHandler(event: DragEvent): void {
-    console.log(event);
+    console.log(`clientX: ${event.clientX}, clientY: ${event.clientY}`);
   }
 
   @autobind
