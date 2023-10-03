@@ -8,7 +8,7 @@ const blocks = [
   new Block("block-3", 300),
 ];
 blocks.forEach((b) => {
-  placement.appendChild(b.getImage());
+  placement.appendChild(b.element);
 });
 
 new Board();

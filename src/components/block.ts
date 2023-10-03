@@ -4,14 +4,23 @@ import { Utils } from "../utils/utils";
 
 // house block
 export class Block implements Draggable {
+  readonly id;
+  private _elem: HTMLDivElement;
+
   private img_src: string;
   private img_elem: HTMLImageElement;
   private rotation_idx = 0;
 
-  constructor(public id: string, width: number) {
+  constructor(id: string, width: number) {
+    this.id = id;
     this.img_src = Utils.block_img_path(id);
     this.img_elem = new Image(width);
     this.img_elem.src = this.img_src;
+
+    // Wrap the image element. Register draggable events on this wrapper element,
+    // so we can successfully set rotated degree on image shadow while dragging
+    this._elem = document.createElement("div");
+    this._elem.appendChild(this.img_elem);
 
     this.configure();
   }
@@ -27,22 +36,57 @@ export class Block implements Draggable {
     });
 
     // Draggable
-    this.img_elem.draggable = true;
-    this.img_elem.addEventListener("dragstart", this.dragStartHandler);
-    this.img_elem.addEventListener("dragend", this.dragEndHandler);
+    this._elem.draggable = true;
+    this._elem.addEventListener("dragstart", this.dragStartHandler);
+    this._elem.addEventListener("dragend", this.dragEndHandler);
   }
 
-  getImage() {
-    return this.img_elem;
+  get element() {
+    return this._elem;
+  }
+
+  private getRotatedImageShadow(): HTMLElement {
+    let crt = this._elem.cloneNode(true) as HTMLElement;
+    crt.id = "image-shadow";
+
+    // this element should not been seen on screen
+    crt.style.position = "absolute";
+    crt.style.top = "-300px";
+    crt.style.left = "-300px";
+    crt.style.zIndex = "2";
+
+    // set rotation degree
+    let inner = crt.getElementsByTagName("img")[0];
+    let degree = Utils.rotation_degree(this.rotation_idx);
+    inner.style.transform = `rotate(${degree}deg)`;
+
+    return crt;
   }
 
   @autobind
   dragStartHandler(event: DragEvent): void {
-    console.log(`clientX: ${event.clientX}, clientY: ${event.clientY}`);
+    // get cell info
+    let row = Math.floor(event.offsetY / 100);
+    let col = Math.floor(event.offsetX / 100);
+    console.log(`cell of the block: (${row}, ${col})`);
+    // TODO: modify to json format, include: id, row, col
+    event.dataTransfer!.setData("text/plain", this.id);
+
+    // set drag image rotated
+    let shadow = this.getRotatedImageShadow();
+    document.body.appendChild(shadow);
+    event.dataTransfer!.setDragImage(shadow, 50, 50);
+
+    // set transparency of original image
+    this.img_elem.style.opacity = "0.4";
   }
 
   @autobind
   dragEndHandler(event: DragEvent): void {
-    console.log(event);
+    this.img_elem.style.removeProperty("opacity");
+
+    // clean drag image
+    let elem = document.getElementById("image-shadow");
+    elem?.remove();
   }
 }
