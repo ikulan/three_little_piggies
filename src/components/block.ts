@@ -1,5 +1,5 @@
 import { autobind } from "../decorators/autobind";
-import { Draggable } from "../models/drag-drop";
+import { Draggable } from "../models/drag_drop";
 import { Utils } from "../utils/utils";
 
 // house block

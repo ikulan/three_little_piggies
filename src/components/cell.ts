@@ -1,4 +1,4 @@
-import { DragTarget } from "../models/drag-drop";
+import { DragTarget } from "../models/drag_drop";
 import { CellUtils } from "../utils/cell_utils";
 
 export class Cell implements DragTarget {
@@ -24,13 +24,18 @@ export class Cell implements DragTarget {
   }
 
   private configure() {
+    this._elem.addEventListener("dragenter", this.dragEnterHandler);
     this._elem.addEventListener("dragover", this.dragOverHandler);
     this._elem.addEventListener("drop", this.dropHandler);
     this._elem.addEventListener("dragleave", this.dragLeaveHandler);
   }
 
+  dragEnterHandler(event: DragEvent): void {
+    console.log(`dragEnter: ${this.id}`);
+  }
+
   dragOverHandler(event: DragEvent): void {
-    console.log(`dragOver: ${this.id}`);
+    //console.log(`dragOver: ${this.id}`);
   }
 
   dragLeaveHandler(event: DragEvent): void {}
