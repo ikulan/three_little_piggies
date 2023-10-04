@@ -5,6 +5,11 @@ export class BlockImage {
   private _elem: HTMLImageElement;
   private _img_src: string;
   private _width: number;
+
+  // matrix
+  private _shape: number[][];
+
+  // rotation related
   private _rotation_idx = 0;
   private _rotation_degree = 0;
 
@@ -14,6 +19,8 @@ export class BlockImage {
     this._width = width;
     this._elem = new Image(width);
     this._elem.src = this._img_src;
+
+    this._shape = Utils.block_shape(id);
 
     this.configure();
   }
@@ -37,7 +44,9 @@ export class BlockImage {
   private rotate() {
     this._rotation_idx = (this._rotation_idx + 1) % 4;
     this._rotation_degree = Utils.rotation_degree(this._rotation_idx);
+
     this._elem.style.transform = `rotate(${this._rotation_degree}deg)`;
+    Utils.transpose(this._shape);
   }
 
   public transparentize(action: boolean) {
