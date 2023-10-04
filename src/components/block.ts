@@ -1,48 +1,38 @@
 import { autobind } from "../decorators/autobind";
+import { BlockImage } from "./block_image";
 import { Draggable } from "../models/drag_drop";
-import { Utils } from "../utils/utils";
 
 // house block
 export class Block implements Draggable {
   readonly id;
   private _elem: HTMLDivElement;
-
-  private img_src: string;
-  private img_elem: HTMLImageElement;
-  private rotation_idx = 0;
+  private _image: BlockImage;
 
   constructor(id: string, width: number) {
     this.id = id;
-    this.img_src = Utils.block_img_path(id);
-    this.img_elem = new Image(width);
-    this.img_elem.src = this.img_src;
+    this._image = new BlockImage(id, width);
 
     // Wrap the image element. Register draggable events on this wrapper element,
     // so we can successfully set rotated degree on image shadow while dragging
     this._elem = document.createElement("div");
-    this._elem.appendChild(this.img_elem);
+    this._elem.appendChild(this._image.element);
 
     this.configure();
   }
 
+  get element() {
+    return this._elem;
+  }
+
+  get r_degree() {
+    return this._image.rotation_degree;
+  }
+
   private configure() {
-    // Image Rotation on double clicks
-    this.img_elem.addEventListener("dblclick", (e) => {
-      this.rotation_idx = (this.rotation_idx + 1) % 4;
-      console.log(`rotation_idx: ${this.rotation_idx}`);
-
-      let degree = Utils.rotation_degree(this.rotation_idx);
-      this.img_elem.style.transform = `rotate(${degree}deg)`;
-    });
-
     // Draggable
     this._elem.draggable = true;
     this._elem.addEventListener("dragstart", this.dragStartHandler);
     this._elem.addEventListener("dragend", this.dragEndHandler);
-  }
-
-  get element() {
-    return this._elem;
   }
 
   private getRotatedImageShadow(): HTMLElement {
@@ -57,8 +47,7 @@ export class Block implements Draggable {
 
     // set rotation degree
     let inner = crt.getElementsByTagName("img")[0];
-    let degree = Utils.rotation_degree(this.rotation_idx);
-    inner.style.transform = `rotate(${degree}deg)`;
+    inner.style.transform = `rotate(${this.r_degree}deg)`;
 
     return crt;
   }
@@ -78,12 +67,12 @@ export class Block implements Draggable {
     event.dataTransfer!.setDragImage(shadow, 50, 50);
 
     // set transparency of original image
-    this.img_elem.style.opacity = "0.4";
+    this._image.transparentize(true);
   }
 
   @autobind
   dragEndHandler(event: DragEvent): void {
-    this.img_elem.style.removeProperty("opacity");
+    this._image.transparentize(false);
 
     // clean drag image
     let elem = document.getElementById("image-shadow");
