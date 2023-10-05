@@ -1,13 +1,12 @@
 import { Block } from "./components/block";
 import { Board } from "./components/board";
+import { BLOCK_CONFIGS } from "./models/block_model";
 
 const placement = document.getElementById("placement")!;
-const blocks = [
-  new Block("block-1", 300),
-  new Block("block-2", 200),
-  new Block("block-3", 300),
-];
-blocks.forEach((b) => {
+const block_ids = Object.keys(BLOCK_CONFIGS);
+
+block_ids.forEach((bid) => {
+  let b = new Block(bid);
   placement.appendChild(b.element);
 });
 

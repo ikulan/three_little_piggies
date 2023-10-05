@@ -15,15 +15,15 @@ export class BlockImage {
   private _rotation_degree = 0;
   private _x_offset: number;
 
-  constructor(id: string, width: number) {
+  constructor(id: string) {
     this.id = id;
-    this._img_src = Utils.block_img_path(id);
-    this._width = width;
-    this._elem = new Image(width);
-    this._elem.src = this._img_src;
-
     this._shape = BLOCK_CONFIGS[id].shape;
     this._x_offset = BLOCK_CONFIGS[id].rotation_x_offset;
+
+    this._img_src = Utils.block_img_path(id);
+    this._width = this._shape[0].length * 100;
+    this._elem = new Image(this._width);
+    this._elem.src = this._img_src;
 
     this.configure();
   }

@@ -8,9 +8,9 @@ export class Block implements Draggable {
   private _elem: HTMLDivElement;
   private _image: BlockImage;
 
-  constructor(id: string, width: number) {
+  constructor(id: string) {
     this.id = id;
-    this._image = new BlockImage(id, width);
+    this._image = new BlockImage(id);
 
     // Wrap the image element. Register draggable events on this wrapper element,
     // so we can successfully set rotated degree on image shadow while dragging
