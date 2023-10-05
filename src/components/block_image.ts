@@ -1,10 +1,10 @@
 import { Utils } from "../utils/utils";
 import { BLOCK_CONFIGS } from "../models/block_model";
+import { BlockContent } from "../models/block_model";
 
 export class BlockImage {
   readonly id: string;
   private _elem: HTMLImageElement;
-  private _img_src: string;
   private _width: number;
 
   // matrix
@@ -20,10 +20,9 @@ export class BlockImage {
     this._shape = BLOCK_CONFIGS[id].shape;
     this._x_offset = BLOCK_CONFIGS[id].rotation_x_offset;
 
-    this._img_src = Utils.block_img_path(id);
     this._width = this._shape[0].length * 100;
     this._elem = new Image(this._width);
-    this._elem.src = this._img_src;
+    this._elem.src = Utils.block_img_path(id);
 
     this.configure();
   }
@@ -37,7 +36,8 @@ export class BlockImage {
   }
 
   get house_pos() {
-    let [x, y] = Utils.house_pos(this._shape);
+    let [row, col] = Utils.find_indices_2D(this._shape, BlockContent.House);
+    let [x, y] = [col * 100 + 50, row * 100 + 50];
     // need to apply offset when the image rotated vertically
     if (this._rotation_idx % 2 > 0) {
       x += this._x_offset;

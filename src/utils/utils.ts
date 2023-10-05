@@ -1,6 +1,4 @@
 import _ from "lodash";
-import { BLOCK_CONFIGS } from "../models/block_model";
-import { BlockContent } from "../models/block_model";
 
 export class Utils {
   static ROTATIONS = [0, 90, 180, 270];
@@ -13,17 +11,14 @@ export class Utils {
     return `assets/imgs/${block_id}.png`;
   }
 
-  static block_shape(block_id: string) {
-    return BLOCK_CONFIGS[block_id].shape;
-  }
-
-  // return the house's position on the block
-  static house_pos(shape: number[][]): [number, number] {
-    let row = _.findIndex(shape, function (row) {
-      return row.includes(BlockContent.House);
+  // find row and column indices of given value in the 2D array
+  static find_indices_2D(matrix: number[][], value: number): [number, number] {
+    let row = _.findIndex(matrix, function (row) {
+      return row.includes(value);
     });
-    let col = _.indexOf(shape[row], BlockContent.House);
-    return [col * 100 + 50, row * 100 + 50];
+    let col = _.indexOf(matrix[row], value);
+
+    return [row, col];
   }
 
   // rotate the matrix clock-wise
