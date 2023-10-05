@@ -1,5 +1,6 @@
 import { autobind } from "../decorators/autobind";
 import { BlockImage } from "./block_image";
+import { dataStore } from "./data_store";
 import { Draggable } from "../models/drag_drop";
 
 // house block
@@ -54,10 +55,12 @@ export class Block implements Draggable {
 
   @autobind
   dragStartHandler(event: DragEvent): void {
-    // TODO: modify to json format, include: id, row, col
-    event.dataTransfer!.setData("text/plain", this.id);
+    // set data that would be transfered to target cell
+    // not using event.dataTransfer because it's not accessible in dragEnter event
+    let data = { id: this.id, r_degree: this.r_degree };
+    dataStore.setData(data);
 
-    // set drag image rotated
+    // set rotated drag image
     let [offset_x, offset_y] = this._image.house_pos;
     let shadow = this.getRotatedImageShadow();
     document.body.appendChild(shadow);

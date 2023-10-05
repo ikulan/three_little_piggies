@@ -1,5 +1,7 @@
-import { DragTarget } from "../models/drag_drop";
+import { autobind } from "../decorators/autobind";
 import { CellUtils } from "../utils/cell_utils";
+import { dataStore } from "./data_store";
+import { DragTarget } from "../models/drag_drop";
 
 export class Cell implements DragTarget {
   readonly id: string;
@@ -30,17 +32,28 @@ export class Cell implements DragTarget {
     this._elem.addEventListener("dragleave", this.dragLeaveHandler);
   }
 
+  @autobind
   dragEnterHandler(event: DragEvent): void {
-    console.log(`dragEnter: ${this.id}`);
+    // check if the block fits on this position
+    let data = dataStore.getData();
+    console.log(`dragEnter: ${this.id}, receive data: ${data}`);
+    console.log(data);
   }
 
+  @autobind
   dragOverHandler(event: DragEvent): void {
     //console.log(`dragOver: ${this.id}`);
   }
 
-  dragLeaveHandler(event: DragEvent): void {}
+  @autobind
+  dragLeaveHandler(event: DragEvent): void {
+    console.log(`dragLeave: ${this.id}`);
+  }
 
-  dropHandler(event: DragEvent): void {}
+  @autobind
+  dropHandler(event: DragEvent): void {
+    console.log(`drop: ${this.id}`);
+  }
 
   get element() {
     return this._elem;
