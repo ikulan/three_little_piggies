@@ -57,11 +57,15 @@ export class Block implements Draggable {
   dragStartHandler(event: DragEvent): void {
     // set data that would be transfered to target cell
     // not using event.dataTransfer because it's not accessible in dragEnter event
-    let data = { id: this.id, r_degree: this.r_degree };
+    let data = {
+      id: this.id,
+      r_degree: this.r_degree,
+      cell_plan: this._image.cell_plan,
+    };
     dataStore.setData(data);
 
     // set rotated drag image
-    let [offset_x, offset_y] = this._image.house_pos;
+    let [offset_x, offset_y] = this._image.house_offsets;
     let shadow = this.getRotatedImageShadow();
     document.body.appendChild(shadow);
     event.dataTransfer!.setDragImage(shadow, offset_x, offset_y);

@@ -13,11 +13,13 @@ export class BlockImage {
   // rotation related
   private _rotation_idx = 0;
   private _rotation_degree = 0;
+  private _house_loc: number[]; // [row, col]
   private _x_offset: number;
 
   constructor(id: string) {
     this.id = id;
     this._shape = BLOCK_CONFIGS[id].shape;
+    this._house_loc = Utils.find_indices_2D(this._shape, BlockContent.House);
     this._x_offset = BLOCK_CONFIGS[id].rotation_x_offset;
 
     this._width = this._shape[0].length * 100;
@@ -35,14 +37,26 @@ export class BlockImage {
     return this._rotation_degree;
   }
 
-  get house_pos() {
-    let [row, col] = Utils.find_indices_2D(this._shape, BlockContent.House);
-    let [x, y] = [col * 100 + 50, row * 100 + 50];
+  get house_offsets() {
+    let x = this._house_loc[1] * 100 + 50;
+    let y = this._house_loc[0] * 100 + 50;
     // need to apply offset when the image rotated vertically
     if (this._rotation_idx % 2 > 0) {
       x += this._x_offset;
     }
     return [x, y];
+  }
+
+  get cell_plan() {
+    let [row, col] = this._house_loc;
+    let [total_row, total_col] = [this._shape.length, this._shape[0].length];
+
+    return [
+      row, // # of upside cells
+      total_col - col - 1, // # of right side cells
+      total_row - row - 1, // # of down side cells
+      col, // # of left side cells
+    ];
   }
 
   private configure() {
@@ -59,6 +73,7 @@ export class BlockImage {
 
     this._elem.style.transform = `rotate(${this._rotation_degree}deg)`;
     this._shape = Utils.transpose(this._shape);
+    this._house_loc = Utils.find_indices_2D(this._shape, BlockContent.House);
   }
 
   public transparentize(action: boolean) {
