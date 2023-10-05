@@ -1,4 +1,5 @@
 import { Utils } from "../utils/utils";
+import { BLOCK_CONFIGS } from "../models/block_model";
 
 export class BlockImage {
   readonly id: string;
@@ -12,6 +13,7 @@ export class BlockImage {
   // rotation related
   private _rotation_idx = 0;
   private _rotation_degree = 0;
+  private _x_offset: number;
 
   constructor(id: string, width: number) {
     this.id = id;
@@ -20,7 +22,8 @@ export class BlockImage {
     this._elem = new Image(width);
     this._elem.src = this._img_src;
 
-    this._shape = Utils.block_shape(id);
+    this._shape = BLOCK_CONFIGS[id].shape;
+    this._x_offset = BLOCK_CONFIGS[id].rotation_x_offset;
 
     this.configure();
   }
@@ -31,6 +34,15 @@ export class BlockImage {
 
   get rotation_degree() {
     return this._rotation_degree;
+  }
+
+  get house_pos() {
+    let [x, y] = Utils.house_pos(this._shape);
+    // need to apply offset when the image rotated vertically
+    if (this._rotation_idx % 2 > 0) {
+      x += this._x_offset;
+    }
+    return [x, y];
   }
 
   private configure() {
@@ -46,7 +58,7 @@ export class BlockImage {
     this._rotation_degree = Utils.rotation_degree(this._rotation_idx);
 
     this._elem.style.transform = `rotate(${this._rotation_degree}deg)`;
-    Utils.transpose(this._shape);
+    this._shape = Utils.transpose(this._shape);
   }
 
   public transparentize(action: boolean) {

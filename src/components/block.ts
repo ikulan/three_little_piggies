@@ -54,17 +54,14 @@ export class Block implements Draggable {
 
   @autobind
   dragStartHandler(event: DragEvent): void {
-    // get cell info
-    let row = Math.floor(event.offsetY / 100);
-    let col = Math.floor(event.offsetX / 100);
-    console.log(`cell of the block: (${row}, ${col})`);
     // TODO: modify to json format, include: id, row, col
     event.dataTransfer!.setData("text/plain", this.id);
 
     // set drag image rotated
+    let [offset_x, offset_y] = this._image.house_pos;
     let shadow = this.getRotatedImageShadow();
     document.body.appendChild(shadow);
-    event.dataTransfer!.setDragImage(shadow, 50, 50);
+    event.dataTransfer!.setDragImage(shadow, offset_x, offset_y);
 
     // set transparency of original image
     this._image.transparentize(true);

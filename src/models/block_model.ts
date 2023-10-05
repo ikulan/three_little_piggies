@@ -5,9 +5,12 @@ export enum BlockContent {
 }
 
 interface BlockModel {
+  // a matrix description for the block contents
   shape: number[][];
-  width: number;
-  house_loc: [number, number];
+
+  // when rotated vertically, the image may stretched on width, so we
+  // need to adjust the x-axis offset to correctly point to the house
+  rotation_x_offset: number;
 }
 
 interface BlockConfig {
@@ -20,20 +23,17 @@ export const BLOCK_CONFIGS: BlockConfig = {
       [BlockContent.House, BlockContent.Lawn, BlockContent.Lawn],
       [BlockContent.Lawn, BlockContent.None, BlockContent.None],
     ],
-    width: 300,
-    house_loc: [0, 1],
+    rotation_x_offset: 50,
   },
   "block-2": {
     shape: [
       [BlockContent.House, BlockContent.Lawn],
       [BlockContent.Lawn, BlockContent.None],
     ],
-    width: 200,
-    house_loc: [0, 1],
+    rotation_x_offset: 0,
   },
   "block-3": {
     shape: [[BlockContent.Lawn, BlockContent.House, BlockContent.Lawn]],
-    width: 300,
-    house_loc: [0, 2],
+    rotation_x_offset: 100,
   },
 };
