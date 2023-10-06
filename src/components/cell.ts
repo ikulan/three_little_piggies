@@ -1,5 +1,6 @@
 import { autobind } from "../decorators/autobind";
 import { CellUtils } from "../utils/cell_utils";
+import { Component } from "./component";
 import { DragTarget } from "../models/drag_drop";
 import { Tiles } from "../models/tiles";
 
@@ -7,9 +8,7 @@ interface Listeners {
   [id: string]: any;
 }
 
-export class Cell implements DragTarget {
-  readonly id: string;
-  private _elem: HTMLDivElement;
+export class Cell extends Component<HTMLDivElement> implements DragTarget {
   private _loc: number[]; // [row, col]
   private _type = Tiles.Invalid;
   private listeners: Listeners = {
@@ -19,23 +18,12 @@ export class Cell implements DragTarget {
   };
 
   constructor(row: number, col: number, type: Tiles) {
-    this.id = `${row},${col}`;
-
-    // HTMLElement properties
-    this._elem = document.createElement("div");
-    this._elem.id = this.id;
-    this._elem.classList.add(CellUtils.CLASS_NAME);
+    super(`${row},${col}`);
 
     this._loc = [row, col];
     this.type = type;
 
-    //this.setClass();
-
     this.configure();
-  }
-
-  get element() {
-    return this._elem;
   }
 
   get location() {
@@ -64,20 +52,18 @@ export class Cell implements DragTarget {
     }
   }
 
-  private configure() {
+  protected initElement(): HTMLDivElement {
+    let elem = document.createElement("div");
+    elem.id = this.id;
+    elem.classList.add(CellUtils.CLASS_NAME);
+    return elem;
+  }
+
+  protected configure() {
     this._elem.addEventListener("dragenter", this.dragEnterHandler);
     this._elem.addEventListener("dragover", this.dragOverHandler);
     this._elem.addEventListener("drop", this.dropHandler);
     this._elem.addEventListener("dragleave", this.dragLeaveHandler);
-  }
-
-  private setClass() {
-    this._elem.classList.add(CellUtils.CLASS_NAME);
-    if (this._type === Tiles.Invalid) {
-      this._elem.classList.add(CellUtils.CLASS_INVALID);
-    } else if (this._type === Tiles.Pig) {
-      this._elem.classList.add(CellUtils.CLASS_PIG);
-    }
   }
 
   private notifyListeners(type: string) {

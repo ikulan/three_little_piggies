@@ -1,17 +1,20 @@
+import { Component } from "./component";
 import { Utils } from "../utils/utils";
 
-export class Button {
-  private _elem: HTMLButtonElement;
+export class Button extends Component<HTMLButtonElement> {
   private _img_elem: HTMLImageElement;
 
-  constructor(public id: string) {
-    this._elem = document.createElement("button");
+  constructor(id: string) {
+    super(id);
+
     this._img_elem = new Image();
     this._img_elem.src = Utils.img_path(this.id);
     this._elem.appendChild(this._img_elem);
   }
 
-  get element() {
-    return this._elem;
+  protected initElement(): HTMLButtonElement {
+    return document.createElement("button");
   }
+
+  protected configure(): void {}
 }

@@ -1,37 +1,23 @@
+import { Component } from "./component";
 import { Utils } from "../utils/utils";
 import { BLOCK_CONFIGS } from "../models/block_model";
 import { Tiles } from "../models/tiles";
 
-export class BlockImage {
-  readonly id: string;
-  private _elem: HTMLImageElement;
-  private _width: number;
-
-  // matrix
+export class BlockImage extends Component<HTMLImageElement> {
   private _shape: number[][];
-
-  // rotation related
   private _rotation_idx = 0;
   private _rotation_degree = 0;
   private _house_loc: number[]; // [row, col]
   private _x_offset: number;
 
   constructor(id: string) {
-    this.id = id;
+    super(id);
 
     this._shape = BLOCK_CONFIGS[id].shape;
     this._house_loc = Utils.find_indices_2D(this._shape, Tiles.House);
     this._x_offset = BLOCK_CONFIGS[id].rotation_x_offset;
 
-    this._width = this._shape[0].length * 100;
-    this._elem = new Image(this._width);
-    this._elem.src = Utils.img_path(id);
-
     this.configure();
-  }
-
-  get element() {
-    return this._elem;
   }
 
   get rotation_degree() {
@@ -60,7 +46,15 @@ export class BlockImage {
     ];
   }
 
-  private configure() {
+  protected initElement(): HTMLImageElement {
+    let elem = new Image();
+    elem.src = Utils.img_path(this.id);
+    return elem;
+  }
+
+  protected configure() {
+    this._elem.width = this._shape[0].length * 100;
+
     // Image Rotation on double clicks
     this._elem.addEventListener("dblclick", (e) => {
       this.rotate();

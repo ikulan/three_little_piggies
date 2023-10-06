@@ -1,10 +1,10 @@
 import { autobind } from "../decorators/autobind";
 import { Cell } from "./cell";
+import { Component } from "./component";
 import { Tiles } from "../models/tiles";
 import { DataModel, dataStore } from "./data_store";
 
-export class Board {
-  private elem: HTMLDivElement;
+export class Board extends Component<HTMLDivElement> {
   private cells: Cell[];
   private _shape = [
     [Tiles.Invalid, Tiles.Empty, Tiles.Empty, Tiles.Invalid],
@@ -14,13 +14,20 @@ export class Board {
   ];
 
   constructor() {
-    this.elem = document.getElementById("board")! as HTMLDivElement;
+    super("board");
+
     this.cells = [];
 
-    this.renderContent();
+    this.renderCells();
   }
 
-  private renderContent() {
+  protected initElement(): HTMLDivElement {
+    return document.getElementById("board")! as HTMLDivElement;
+  }
+
+  protected configure(): void {}
+
+  private renderCells() {
     for (let row = 0; row < 4; row++) {
       let rowElem = document.createElement("div");
       rowElem.className = "row";
@@ -32,7 +39,7 @@ export class Board {
         this.cells.push(cell);
         rowElem.appendChild(cell.element);
       }
-      this.elem.appendChild(rowElem);
+      this._elem.appendChild(rowElem);
     }
   }
 

@@ -1,18 +1,23 @@
+import { Component } from "./component";
+
 export interface DataModel {
   block_id: string;
   r_degree: number;
   cell_plan: number[];
 }
 
-export class DataStore {
-  readonly id: string;
-  private _elem: HTMLScriptElement;
+export class DataStore extends Component<HTMLScriptElement> {
   private static instance: DataStore;
 
   private constructor() {
-    this.id = "data-store";
-    this._elem = document.getElementById(this.id)! as HTMLScriptElement;
+    super("data-store");
   }
+
+  protected initElement(): HTMLScriptElement {
+    return document.getElementById(this.id)! as HTMLScriptElement;
+  }
+
+  protected configure(): void {}
 
   static getInstance() {
     if (this.instance) {

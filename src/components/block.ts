@@ -1,35 +1,34 @@
 import { autobind } from "../decorators/autobind";
 import { BlockImage } from "./block_image";
+import { Component } from "./component";
 import { DataModel, dataStore } from "./data_store";
 import { Draggable } from "../models/drag_drop";
 
 // house block
-export class Block implements Draggable {
-  readonly id;
-  private _elem: HTMLDivElement;
+export class Block extends Component<HTMLDivElement> implements Draggable {
   private _image: BlockImage;
 
   constructor(id: string) {
-    this.id = id;
+    super(id);
+
     this._image = new BlockImage(id);
 
-    // Wrap the image element. Register draggable events on this wrapper element,
-    // so we can successfully set rotated degree on image shadow while dragging
-    this._elem = document.createElement("div");
-    this._elem.appendChild(this._image.element);
-
     this.configure();
-  }
-
-  get element() {
-    return this._elem;
   }
 
   get r_degree() {
     return this._image.rotation_degree;
   }
 
-  private configure() {
+  protected initElement(): HTMLDivElement {
+    return document.createElement("div");
+  }
+
+  protected configure() {
+    // Wrap the image element. Register draggable events on this wrapper element,
+    // so we can successfully set rotated degree on image shadow for dragging
+    this._elem.appendChild(this._image.element);
+
     // Draggable
     this._elem.draggable = true;
     this._elem.addEventListener("dragstart", this.dragStartHandler);
