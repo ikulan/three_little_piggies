@@ -50,7 +50,7 @@ body {
   border: 2px solid rgb(79, 185, 227);
 }
 
-.cell.occupied {
+.cell.lawn {
   background-color: #a8df8e;
   border: none;
 }

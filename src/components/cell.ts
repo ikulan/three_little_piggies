@@ -12,26 +12,58 @@ export class Cell implements DragTarget {
   readonly id: string;
   private _elem: HTMLDivElement;
   private _loc: number[]; // [row, col]
+  private _type = Tiles.Invalid;
   private listeners: Listeners = {
     dragenter: null,
     dragleave: null,
     drop: null,
   };
 
-  constructor(
-    private _row: number,
-    private _col: number,
-    private _type: Tiles
-  ) {
-    this._elem = document.createElement("div");
-    this.id = `${_row},${_col}`;
-    this._loc = [_row, _col];
+  constructor(row: number, col: number, type: Tiles) {
+    this.id = `${row},${col}`;
 
     // HTMLElement properties
+    this._elem = document.createElement("div");
     this._elem.id = this.id;
-    this.setClass();
+    this._elem.classList.add(CellUtils.CLASS_NAME);
+
+    this._loc = [row, col];
+    this.type = type;
+
+    //this.setClass();
 
     this.configure();
+  }
+
+  get element() {
+    return this._elem;
+  }
+
+  get location() {
+    return this._loc;
+  }
+
+  get type() {
+    return this._type;
+  }
+
+  set type(type: Tiles) {
+    this._type = type;
+
+    if (type === Tiles.Invalid) {
+      this._elem.classList.add(CellUtils.CLASS_INVALID);
+    } else if (type === Tiles.Empty) {
+      this._elem.classList.remove(...this._elem.classList);
+      this._elem.classList.add(CellUtils.CLASS_NAME);
+    } else if (type === Tiles.Lawn) {
+      this._elem.classList.add(CellUtils.CLASS_LAWN);
+    } else if (type === Tiles.House) {
+      this._elem.classList.add(CellUtils.CLASS_LAWN);
+      this._elem.classList.add(CellUtils.CLASS_HOUSE);
+    } else if (type === Tiles.Pig) {
+      //this._elem.classList.add(CellUtils.CLASS_OCCUPIED);
+      this._elem.classList.add(CellUtils.CLASS_PIG);
+    }
   }
 
   private configure() {
@@ -61,13 +93,15 @@ export class Cell implements DragTarget {
 
   @autobind
   dragEnterHandler(event: DragEvent): void {
+    event.preventDefault();
     // check if the block fits on this position
     this.notifyListeners("dragenter");
   }
 
   @autobind
   dragOverHandler(event: DragEvent): void {
-    //console.log(`dragOver: ${this.id}`);
+    // so the drop event can be activated
+    event.preventDefault();
   }
 
   @autobind
@@ -77,34 +111,26 @@ export class Cell implements DragTarget {
 
   @autobind
   dropHandler(event: DragEvent): void {
-    console.log(`drop: ${this.id}`);
+    if (this.isDroppable()) {
+      // place the block on game board
+      this.notifyListeners("drop");
+    }
   }
 
-  get element() {
-    return this._elem;
+  setDroppable(turn_on: boolean) {
+    if (turn_on === true) {
+      console.log("turn on drppable");
+      this._elem.classList.add("droppable");
+    } else {
+      this._elem.classList.remove("droppable");
+    }
   }
 
-  get location() {
-    return this._loc;
+  isDroppable() {
+    return this._elem.classList.contains("droppable");
   }
 
-  get type() {
-    return this._type;
-  }
-
-  addPig() {
-    this._elem.classList.add(CellUtils.CLASS_PIG);
-  }
-
-  removePig() {
-    this._elem.classList.remove(CellUtils.CLASS_PIG);
-  }
-
-  addHouse() {
-    this._elem.classList.add(CellUtils.CLASS_HOUSE);
-  }
-
-  removeHouse() {
-    this._elem.classList.remove(CellUtils.CLASS_HOUSE);
+  rotate_house(degree: number) {
+    this._elem.style.transform = `rotate(${degree}deg)`;
   }
 }

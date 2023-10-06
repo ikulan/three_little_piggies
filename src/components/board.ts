@@ -28,6 +28,7 @@ export class Board {
       for (let col = 0; col < 4; col++) {
         let cell = new Cell(row, col, this._shape[row][col]);
         cell.addListener("dragenter", this.enterCellHandler);
+        cell.addListener("drop", this.dropCellHandler);
         this.cells.push(cell);
         rowElem.appendChild(cell.element);
       }
@@ -58,11 +59,53 @@ export class Board {
     return true;
   }
 
+  private place_block(row: number, col: number) {
+    let data = dataStore.getData();
+    const DIR = [
+      [-1, 0],
+      [0, 1],
+      [1, 0],
+      [0, -1],
+    ];
+
+    let cell = this.getCell(row, col)!;
+    cell.type = Tiles.House;
+    cell.rotate_house(data.r_degree);
+
+    for (let i = 0; i < 4; i++) {
+      let n = data.cell_plan[i];
+      while (n > 0) {
+        let cell = this.getCell(row + n * DIR[i][0], col + n * DIR[i][1]);
+        if (cell !== null && cell.type === Tiles.Empty) {
+          cell.type = Tiles.Lawn;
+        }
+        n--;
+      }
+    }
+  }
+
   @autobind
   private enterCellHandler(cell: Cell) {
-    let [row, col] = cell.location;
-    let valid = this.valid_place(row, col);
-    console.log(`dragEnter: ${cell.id}, valid_place: ${valid}`);
+    // set droppable if the block can place on the cell
+    if (!cell.isDroppable()) {
+      let [row, col] = cell.location;
+      if (this.valid_place(row, col) === true) {
+        cell.setDroppable(true);
+      }
+    }
+  }
+
+  @autobind
+  private leaveCellHandler(cell: Cell) {}
+
+  @autobind
+  private dropCellHandler(cell: Cell) {
+    if (cell.isDroppable()) {
+      console.log(`perform placing block`);
+      let [row, col] = cell.location;
+      this.place_block(row, col);
+      cell.setDroppable(false);
+    }
   }
 
   getCell(row: number, col: number) {
