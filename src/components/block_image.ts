@@ -25,7 +25,7 @@ export class BlockImage {
 
     this._width = this._shape[0].length * 100;
     this._elem = new Image(this._width);
-    this._elem.src = Utils.block_img_path(id);
+    this._elem.src = Utils.img_path(id);
 
     this.configure();
   }

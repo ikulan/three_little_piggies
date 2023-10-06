@@ -7,8 +7,8 @@ export class Utils {
     return Utils.ROTATIONS[index];
   }
 
-  static block_img_path(block_id: string) {
-    return `assets/imgs/${block_id}.png`;
+  static img_path(id: string) {
+    return `assets/imgs/${id}.png`;
   }
 
   // find row and column indices of given value in the 2D array
