@@ -4,10 +4,19 @@ import { dataStore } from "./data_store";
 import { DragTarget } from "../models/drag_drop";
 import { Tiles } from "../models/tiles";
 
+interface Listeners {
+  [id: string]: any;
+}
+
 export class Cell implements DragTarget {
   readonly id: string;
   private _elem: HTMLDivElement;
   private _loc: number[]; // [row, col]
+  private listeners: Listeners = {
+    dragenter: null,
+    dragleave: null,
+    drop: null,
+  };
 
   constructor(
     private _row: number,
@@ -41,12 +50,19 @@ export class Cell implements DragTarget {
     }
   }
 
+  private notifyListeners(type: string) {
+    // send changes to listener functions
+    this.listeners[type](this);
+  }
+
+  addListener(type: string, listenerFn: any) {
+    this.listeners[type] = listenerFn;
+  }
+
   @autobind
   dragEnterHandler(event: DragEvent): void {
     // check if the block fits on this position
-    let data = dataStore.getData();
-    console.log(`dragEnter: ${this.id}, receive data: ${data}`);
-    console.log(data);
+    this.notifyListeners("dragenter");
   }
 
   @autobind
@@ -66,6 +82,14 @@ export class Cell implements DragTarget {
 
   get element() {
     return this._elem;
+  }
+
+  get location() {
+    return this._loc;
+  }
+
+  get type() {
+    return this._type;
   }
 
   addPig() {
