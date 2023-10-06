@@ -1,6 +1,6 @@
 import { autobind } from "../decorators/autobind";
 import { BlockImage } from "./block_image";
-import { dataStore } from "./data_store";
+import { DataModel, dataStore } from "./data_store";
 import { Draggable } from "../models/drag_drop";
 
 // house block
@@ -57,7 +57,7 @@ export class Block implements Draggable {
   dragStartHandler(event: DragEvent): void {
     // set data that would be transfered to target cell
     // not using event.dataTransfer because it's not accessible in dragEnter event
-    let data = {
+    let data: DataModel = {
       block_id: this.id,
       r_degree: this.r_degree,
       cell_plan: this._image.cell_plan,

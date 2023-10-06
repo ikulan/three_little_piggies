@@ -1,6 +1,5 @@
 import { autobind } from "../decorators/autobind";
 import { CellUtils } from "../utils/cell_utils";
-import { dataStore } from "./data_store";
 import { DragTarget } from "../models/drag_drop";
 import { Tiles } from "../models/tiles";
 
@@ -61,7 +60,6 @@ export class Cell implements DragTarget {
       this._elem.classList.add(CellUtils.CLASS_LAWN);
       this._elem.classList.add(CellUtils.CLASS_HOUSE);
     } else if (type === Tiles.Pig) {
-      //this._elem.classList.add(CellUtils.CLASS_OCCUPIED);
       this._elem.classList.add(CellUtils.CLASS_PIG);
     }
   }

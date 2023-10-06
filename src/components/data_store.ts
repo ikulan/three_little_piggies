@@ -1,3 +1,9 @@
+export interface DataModel {
+  block_id: string;
+  r_degree: number;
+  cell_plan: number[];
+}
+
 export class DataStore {
   readonly id: string;
   private _elem: HTMLScriptElement;

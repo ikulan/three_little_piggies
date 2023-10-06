@@ -1,7 +1,7 @@
 import { autobind } from "../decorators/autobind";
 import { Cell } from "./cell";
 import { Tiles } from "../models/tiles";
-import { dataStore } from "./data_store";
+import { DataModel, dataStore } from "./data_store";
 
 export class Board {
   private elem: HTMLDivElement;
@@ -37,7 +37,7 @@ export class Board {
   }
 
   private valid_place(row: number, col: number) {
-    let data = dataStore.getData();
+    let data: DataModel = dataStore.getData();
     const DIR = [
       [-1, 0],
       [0, 1],
@@ -60,7 +60,7 @@ export class Board {
   }
 
   private place_block(row: number, col: number) {
-    let data = dataStore.getData();
+    let data: DataModel = dataStore.getData();
     const DIR = [
       [-1, 0],
       [0, 1],
