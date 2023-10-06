@@ -1,6 +1,6 @@
 import { Utils } from "../utils/utils";
 import { BLOCK_CONFIGS } from "../models/block_model";
-import { BlockContent } from "../models/block_model";
+import { Tiles } from "../models/tiles";
 
 export class BlockImage {
   readonly id: string;
@@ -18,8 +18,9 @@ export class BlockImage {
 
   constructor(id: string) {
     this.id = id;
+
     this._shape = BLOCK_CONFIGS[id].shape;
-    this._house_loc = Utils.find_indices_2D(this._shape, BlockContent.House);
+    this._house_loc = Utils.find_indices_2D(this._shape, Tiles.House);
     this._x_offset = BLOCK_CONFIGS[id].rotation_x_offset;
 
     this._width = this._shape[0].length * 100;
@@ -73,7 +74,7 @@ export class BlockImage {
 
     this._elem.style.transform = `rotate(${this._rotation_degree}deg)`;
     this._shape = Utils.transpose(this._shape);
-    this._house_loc = Utils.find_indices_2D(this._shape, BlockContent.House);
+    this._house_loc = Utils.find_indices_2D(this._shape, Tiles.House);
   }
 
   public transparentize(action: boolean) {

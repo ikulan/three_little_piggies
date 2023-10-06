@@ -2,25 +2,25 @@ import { autobind } from "../decorators/autobind";
 import { CellUtils } from "../utils/cell_utils";
 import { dataStore } from "./data_store";
 import { DragTarget } from "../models/drag_drop";
+import { Tiles } from "../models/tiles";
 
 export class Cell implements DragTarget {
   readonly id: string;
   private _elem: HTMLDivElement;
+  private _loc: number[]; // [row, col]
 
   constructor(
-    private row: number,
-    private col: number,
-    public invalid = false
+    private _row: number,
+    private _col: number,
+    private _type: Tiles
   ) {
     this._elem = document.createElement("div");
-    this.id = `${row},${col}`;
+    this.id = `${_row},${_col}`;
+    this._loc = [_row, _col];
 
     // HTMLElement properties
     this._elem.id = this.id;
-    this._elem.classList.add(CellUtils.CLASS_NAME);
-    if (this.invalid || CellUtils.isInvalidCell(this.id)) {
-      this._elem.classList.add(CellUtils.CLASS_INVALID);
-    }
+    this.setClass();
 
     this.configure();
   }
@@ -30,6 +30,15 @@ export class Cell implements DragTarget {
     this._elem.addEventListener("dragover", this.dragOverHandler);
     this._elem.addEventListener("drop", this.dropHandler);
     this._elem.addEventListener("dragleave", this.dragLeaveHandler);
+  }
+
+  private setClass() {
+    this._elem.classList.add(CellUtils.CLASS_NAME);
+    if (this._type === Tiles.Invalid) {
+      this._elem.classList.add(CellUtils.CLASS_INVALID);
+    } else if (this._type === Tiles.Pig) {
+      this._elem.classList.add(CellUtils.CLASS_PIG);
+    }
   }
 
   @autobind

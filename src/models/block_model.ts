@@ -1,8 +1,4 @@
-export enum BlockContent {
-  None,
-  Lawn,
-  House,
-}
+import { Tiles } from "./tiles";
 
 interface BlockModel {
   // a matrix description for the block contents
@@ -20,20 +16,20 @@ interface BlockConfig {
 export const BLOCK_CONFIGS: BlockConfig = {
   "block-1": {
     shape: [
-      [BlockContent.House, BlockContent.Lawn, BlockContent.Lawn],
-      [BlockContent.Lawn, BlockContent.None, BlockContent.None],
+      [Tiles.House, Tiles.Lawn, Tiles.Lawn],
+      [Tiles.Lawn, Tiles.Invalid, Tiles.Invalid],
     ],
     rotation_x_offset: 50,
   },
   "block-2": {
     shape: [
-      [BlockContent.House, BlockContent.Lawn],
-      [BlockContent.Lawn, BlockContent.None],
+      [Tiles.House, Tiles.Lawn],
+      [Tiles.Lawn, Tiles.Invalid],
     ],
     rotation_x_offset: 0,
   },
   "block-3": {
-    shape: [[BlockContent.Lawn, BlockContent.House, BlockContent.Lawn]],
+    shape: [[Tiles.Lawn, Tiles.House, Tiles.Lawn]],
     rotation_x_offset: 100,
   },
 };
