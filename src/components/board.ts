@@ -5,20 +5,29 @@ import { Tiles } from "../models/tiles";
 import { DataModel, dataStore } from "./data_store";
 
 export class Board extends Component<HTMLDivElement> {
+  private static instance: Board; // Singleton
   private cells: Cell[];
-  private _shape = [
+  private _blueprint = [
     [Tiles.Invalid, Tiles.Empty, Tiles.Empty, Tiles.Invalid],
     [Tiles.Empty, Tiles.Empty, Tiles.Empty, Tiles.Empty],
     [Tiles.Pig, Tiles.Empty, Tiles.Pig, Tiles.Empty],
     [Tiles.Invalid, Tiles.Empty, Tiles.Pig, Tiles.Empty],
   ];
 
-  constructor() {
+  private constructor() {
     super("board");
 
     this.cells = [];
 
     this.renderCells();
+  }
+
+  static getInstance() {
+    if (this.instance) {
+      return this.instance;
+    }
+    this.instance = new Board();
+    return this.instance;
   }
 
   protected initElement(): HTMLDivElement {
@@ -33,7 +42,7 @@ export class Board extends Component<HTMLDivElement> {
       rowElem.className = "row";
 
       for (let col = 0; col < 4; col++) {
-        let cell = new Cell(row, col, this._shape[row][col]);
+        let cell = new Cell(row, col, this._blueprint[row][col]);
         cell.addListener("dragenter", this.enterCellHandler);
         cell.addListener("drop", this.dropCellHandler);
         this.cells.push(cell);
@@ -122,4 +131,16 @@ export class Board extends Component<HTMLDivElement> {
     }
     return null;
   }
+
+  clearBlocks() {
+    for (let row = 0; row < 4; row++) {
+      for (let col = 0; col < 4; col++) {
+        let cell = this.getCell(row, col)!;
+        cell.type = this._blueprint[row][col];
+      }
+    }
+  }
 }
+
+// Singleton
+export const board = Board.getInstance();

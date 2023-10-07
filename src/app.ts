@@ -1,5 +1,5 @@
 import { Block } from "./components/block";
-import { Board } from "./components/board";
+import { board } from "./components/board";
 import { Button } from "./components/button";
 import { BLOCK_CONFIGS } from "./models/block_model";
 
@@ -11,7 +11,7 @@ block_ids.forEach((bid) => {
   placement.appendChild(b.element);
 });
 
-new Board();
+board;
 
 const button_area = document.getElementById("buttons")!;
 const button_names = ["previous", "restart", "next"];
