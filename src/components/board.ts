@@ -43,8 +43,8 @@ export class Board extends Component<HTMLDivElement> {
 
       for (let col = 0; col < 4; col++) {
         let cell = new Cell(row, col, this._blueprint[row][col]);
-        cell.addListener("dragenter", this.enterCellHandler);
-        cell.addListener("drop", this.dropCellHandler);
+        cell.subscribe("dragenter", this.enterCellHandler);
+        cell.subscribe("drop", this.dropCellHandler);
         this.cells.push(cell);
         rowElem.appendChild(cell.element);
       }

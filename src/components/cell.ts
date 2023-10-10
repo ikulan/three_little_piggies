@@ -1,24 +1,17 @@
 import { autobind } from "../decorators/autobind";
 import { CellUtils } from "../utils/cell_utils";
-import { Component } from "./component";
 import { DragTarget } from "../models/drag_drop";
 import { Tiles } from "../models/tiles";
+import { EventPublisher } from "./event_publisher";
 
-interface Listeners {
-  [id: string]: any;
-}
+export class Cell extends EventPublisher<HTMLDivElement> implements DragTarget {
+  static EVENTS = ["dragenter", "dragleave", "drop"];
 
-export class Cell extends Component<HTMLDivElement> implements DragTarget {
   private _loc: number[]; // [row, col]
   private _type = Tiles.Invalid;
-  private listeners: Listeners = {
-    dragenter: null,
-    dragleave: null,
-    drop: null,
-  };
 
   constructor(row: number, col: number, type: Tiles) {
-    super(`${row},${col}`);
+    super(`${row},${col}`, Cell.EVENTS);
 
     this._loc = [row, col];
     this.type = type;
@@ -54,7 +47,6 @@ export class Cell extends Component<HTMLDivElement> implements DragTarget {
 
   protected initElement(): HTMLDivElement {
     let elem = document.createElement("div");
-    elem.id = this.id;
     elem.classList.add(CellUtils.CLASS_NAME);
     return elem;
   }
@@ -66,20 +58,11 @@ export class Cell extends Component<HTMLDivElement> implements DragTarget {
     this._elem.addEventListener("dragleave", this.dragLeaveHandler);
   }
 
-  private notifyListeners(type: string) {
-    // send changes to listener functions
-    this.listeners[type](this);
-  }
-
-  addListener(type: string, listenerFn: any) {
-    this.listeners[type] = listenerFn;
-  }
-
   @autobind
   dragEnterHandler(event: DragEvent): void {
     event.preventDefault();
     // check if the block fits on this position
-    this.notifyListeners("dragenter");
+    this.notify("dragenter");
   }
 
   @autobind
@@ -95,9 +78,10 @@ export class Cell extends Component<HTMLDivElement> implements DragTarget {
 
   @autobind
   dropHandler(event: DragEvent): void {
+    //console.log(event.dataTransfer.);
     if (this.isDroppable()) {
       // place the block on game board
-      this.notifyListeners("drop");
+      this.notify("drop");
     }
   }
 
