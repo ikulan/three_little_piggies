@@ -1,12 +1,12 @@
-import { board } from "./board";
-import { Component } from "./component";
+import { EventPublisher } from "./event_publisher";
 import { Utils } from "../utils/utils";
 
-export class Button extends Component<HTMLButtonElement> {
+export abstract class Button extends EventPublisher<HTMLButtonElement> {
+  static EVENTS = ["click"];
   private _img_elem: HTMLImageElement;
 
   constructor(id: string) {
-    super(id);
+    super(id, Button.EVENTS);
 
     this._img_elem = new Image();
     this._img_elem.src = Utils.img_path(this.id);
@@ -19,13 +19,17 @@ export class Button extends Component<HTMLButtonElement> {
     return document.createElement("button");
   }
 
-  protected configure(): void {
-    if (this.id === "restart") {
-      this._elem.title = "Restart this game";
+  protected configure(): void {}
+}
 
-      this._elem.addEventListener("click", (e) => {
-        board.clearBlocks();
-      });
-    }
+export class PreviousButton extends Button {}
+export class RestartButton extends Button {
+  protected configure(): void {
+    this._elem.title = "Restart this game";
+
+    this._elem.addEventListener("click", (e) => {
+      this.notify("click");
+    });
   }
 }
+export class NextButton extends Button {}

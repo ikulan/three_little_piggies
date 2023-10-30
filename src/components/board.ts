@@ -5,29 +5,16 @@ import { Tiles } from "../models/tiles";
 import { DataModel, dataStore } from "./data_store";
 
 export class Board extends Component<HTMLDivElement> {
-  private static instance: Board; // Singleton
+  private blueprint: Tiles[][];
   private cells: Cell[];
-  private _blueprint = [
-    [Tiles.Invalid, Tiles.Empty, Tiles.Empty, Tiles.Invalid],
-    [Tiles.Empty, Tiles.Empty, Tiles.Empty, Tiles.Empty],
-    [Tiles.Pig, Tiles.Empty, Tiles.Pig, Tiles.Empty],
-    [Tiles.Invalid, Tiles.Empty, Tiles.Pig, Tiles.Empty],
-  ];
 
-  private constructor() {
+  constructor(blueprint: Tiles[][]) {
     super("board");
 
+    this.blueprint = blueprint;
     this.cells = [];
 
     this.renderCells();
-  }
-
-  static getInstance() {
-    if (this.instance) {
-      return this.instance;
-    }
-    this.instance = new Board();
-    return this.instance;
   }
 
   protected initElement(): HTMLDivElement {
@@ -42,7 +29,7 @@ export class Board extends Component<HTMLDivElement> {
       rowElem.className = "row";
 
       for (let col = 0; col < 4; col++) {
-        let cell = new Cell(row, col, this._blueprint[row][col]);
+        let cell = new Cell(row, col, this.blueprint[row][col]);
         cell.subscribe("dragenter", this.enterCellHandler);
         cell.subscribe("drop", this.dropCellHandler);
         this.cells.push(cell);
@@ -98,6 +85,9 @@ export class Board extends Component<HTMLDivElement> {
         n--;
       }
     }
+
+    let block_elem = document.getElementById(data.block_id);
+    block_elem?.classList.add("hide");
   }
 
   @autobind
@@ -136,11 +126,8 @@ export class Board extends Component<HTMLDivElement> {
     for (let row = 0; row < 4; row++) {
       for (let col = 0; col < 4; col++) {
         let cell = this.getCell(row, col)!;
-        cell.type = this._blueprint[row][col];
+        cell.type = this.blueprint[row][col];
       }
     }
   }
 }
-
-// Singleton
-export const board = Board.getInstance();

@@ -31,12 +31,6 @@ button > img {
   width: 80px;
 }
 
-#board {
-  margin: 5px;
-  padding: 20px;
-  flex: 1;
-}
-
 #placement {
   border: 3px solid #a4907c;
   border-radius: 5px;
@@ -44,6 +38,17 @@ button > img {
   padding: 20px;
   flex: 1;
   align-items: center;
+}
+
+.hide {
+  /*display: none;*/
+  opacity: 0%;
+}
+
+#board {
+  margin: 5px;
+  padding: 20px;
+  flex: 1;
 }
 
 .row {

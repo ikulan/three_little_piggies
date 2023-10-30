@@ -3,6 +3,7 @@ export abstract class Component<T extends HTMLElement> {
 
   constructor(readonly id: string) {
     this._elem = this.initElement();
+    this._elem.id = this.id;
   }
 
   get element() {

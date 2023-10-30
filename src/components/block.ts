@@ -81,4 +81,8 @@ export class Block extends Component<HTMLDivElement> implements Draggable {
     let elem = document.getElementById("image-shadow");
     elem?.remove();
   }
+
+  disable() {
+    this._elem.style.display = "none";
+  }
 }
