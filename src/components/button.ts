@@ -6,7 +6,7 @@ export abstract class Button extends EventPublisher<HTMLButtonElement> {
   private _img_elem: HTMLImageElement;
 
   constructor(id: string) {
-    super(id, Button.EVENTS);
+    super(id.toLowerCase(), Button.EVENTS);
 
     this._img_elem = new Image();
     this._img_elem.src = Utils.img_path(this.id);
