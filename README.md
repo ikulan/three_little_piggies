@@ -6,6 +6,14 @@ A front-end project for a webpage version of the preschool board game by [Smart 
 
 This is the first board game my child was able to grasp the rules of and play at the age of three. We had a lot of fun with this game, so when I want to practice my front-end skills, it comes to mind.
 
+### Usage
+
+- Start local development server and auto build on editions.
+  `npm start`
+
+- Build production bundle JS code.
+  `npm run build`
+
 ### Tech Stack
 
 - Typescript
