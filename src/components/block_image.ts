@@ -71,11 +71,18 @@ export class BlockImage extends Component<HTMLImageElement> {
     this._house_loc = Utils.find_indices_2D(this._shape, Tiles.House);
   }
 
-  public transparentize(action: boolean) {
+  transparentize(action: boolean) {
     if (action === true) {
       this._elem.style.opacity = "0.4";
     } else {
       this._elem.style.removeProperty("opacity");
     }
+  }
+
+  reset() {
+    while (this._rotation_idx != 0) {
+      this.rotate();
+    }
+    this.transparentize(false);
   }
 }

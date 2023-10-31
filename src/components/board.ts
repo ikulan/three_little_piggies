@@ -86,6 +86,7 @@ export class Board extends Component<HTMLDivElement> {
       }
     }
 
+    // TODO: move out
     let block_elem = document.getElementById(data.block_id);
     block_elem?.classList.add("hide");
   }

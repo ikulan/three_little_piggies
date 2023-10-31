@@ -43,5 +43,9 @@ export class Game {
   @autobind
   reset() {
     this.board.clearBlocks();
+
+    for (let block of this.block_factory.getAllBlocks()) {
+      block.reset();
+    }
   }
 }

@@ -82,7 +82,8 @@ export class Block extends Component<HTMLDivElement> implements Draggable {
     elem?.remove();
   }
 
-  disable() {
-    this._elem.style.display = "none";
+  reset() {
+    this._image.reset();
+    this._elem.classList.remove("hide");
   }
 }

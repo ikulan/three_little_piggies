@@ -15,4 +15,8 @@ export class BlockFactory {
       this.blocks.set(bid, b);
     });
   }
+
+  getAllBlocks() {
+    return this.blocks.values();
+  }
 }
