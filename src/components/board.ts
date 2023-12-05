@@ -1,15 +1,16 @@
 import { autobind } from "../decorators/autobind";
 import { Cell } from "./cell";
-import { Component } from "./component";
+import { EventPublisher } from "./event_publisher";
 import { Tiles } from "../models/tiles";
 import { DataModel, dataStore } from "./data_store";
 
-export class Board extends Component<HTMLDivElement> {
+export class Board extends EventPublisher<HTMLDivElement> {
+  static EVENTS = ["placeblock"];
   private blueprint: Tiles[][];
   private cells: Cell[];
 
   constructor(blueprint: Tiles[][]) {
-    super("board");
+    super("board", Board.EVENTS);
 
     this.blueprint = blueprint;
     this.cells = [];
@@ -85,10 +86,6 @@ export class Board extends Component<HTMLDivElement> {
         n--;
       }
     }
-
-    // TODO: move out
-    let block_elem = document.getElementById(data.block_id);
-    block_elem?.classList.add("hide");
   }
 
   @autobind
@@ -103,15 +100,13 @@ export class Board extends Component<HTMLDivElement> {
   }
 
   @autobind
-  private leaveCellHandler(cell: Cell) {}
-
-  @autobind
   private dropCellHandler(cell: Cell) {
     if (cell.isDroppable()) {
-      console.log(`perform placing block`);
       let [row, col] = cell.location;
       this.place_block(row, col);
       cell.setDroppable(false);
+
+      this.notify("placeblock");
     }
   }
 
@@ -123,7 +118,7 @@ export class Board extends Component<HTMLDivElement> {
     return null;
   }
 
-  clearBlocks() {
+  reset() {
     for (let row = 0; row < 4; row++) {
       for (let col = 0; col < 4; col++) {
         let cell = this.getCell(row, col)!;

@@ -19,4 +19,8 @@ export class BlockFactory {
   getAllBlocks() {
     return this.blocks.values();
   }
+
+  getBlock(id: string) {
+    return this.blocks.get(id);
+  }
 }

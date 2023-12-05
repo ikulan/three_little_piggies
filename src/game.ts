@@ -3,6 +3,7 @@ import { Tiles } from "./models/tiles";
 import { Board } from "./components/board";
 import { BlockFactory } from "./block_factory";
 import { ButtonFactory, ButtonType } from "./button_factory";
+import { DataModel, dataStore } from "./components/data_store";
 
 export class Game {
   private static instance: Game; // Singleton
@@ -22,6 +23,7 @@ export class Game {
   constructor() {
     this.mode = "day";
     this.board = new Board(this.blue_print);
+    this.board.subscribe("placeblock", this.hideBlock);
 
     // blocks
     this.block_factory = new BlockFactory();
@@ -41,8 +43,15 @@ export class Game {
   }
 
   @autobind
+  hideBlock() {
+    let data: DataModel = dataStore.getData();
+    let block = this.block_factory.getBlock(data.block_id);
+    block?.hide();
+  }
+
+  @autobind
   reset() {
-    this.board.clearBlocks();
+    this.board.reset();
 
     for (let block of this.block_factory.getAllBlocks()) {
       block.reset();
