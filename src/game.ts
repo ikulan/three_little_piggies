@@ -42,11 +42,26 @@ export class Game {
     return this.instance;
   }
 
+  private checkComplete() {
+    for (let block of this.block_factory.getAllBlocks()) {
+      if (!block.isHide()) return false;
+    }
+    return true;
+  }
+
   @autobind
   hideBlock() {
     let data: DataModel = dataStore.getData();
     let block = this.block_factory.getBlock(data.block_id);
     block?.hide();
+
+    if (this.checkComplete()) {
+      window.setTimeout(() => {
+        confirm("Great job! 🎉🎉 Are you ready for the next challenge?")
+          ? this.reset()
+          : null;
+      });
+    }
   }
 
   @autobind
