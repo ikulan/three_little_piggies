@@ -1,11 +1,14 @@
-import { autobind } from "../decorators/autobind";
-import { BlockImage } from "./block_image";
-import { Component } from "./component";
-import { DataModel, dataStore } from "./data_store";
-import { Draggable } from "../models/drag_drop";
+import autobind from "../utils/autobind";
+import BlockImage from "./block_image";
+import Component from "../interface/component";
+import { DataModel, dataStore } from "../utils/data_store";
+import { Draggable } from "../interface/drag_drop";
 
 // house block
-export class Block extends Component<HTMLDivElement> implements Draggable {
+export default class Block
+  extends Component<HTMLDivElement>
+  implements Draggable
+{
   private _image: BlockImage;
 
   constructor(id: string) {

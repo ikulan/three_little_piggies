@@ -1,9 +1,9 @@
-import { Component } from "./component";
-import { Utils } from "../utils/utils";
-import { BLOCK_CONFIGS } from "../models/block_model";
-import { Tiles } from "../models/tiles";
+import Component from "../interface/component";
+import Utils from "../utils/utils";
+import { BLOCK_CONFIGS } from "./block_model";
+import { Tiles } from "../board/tiles";
 
-export class BlockImage extends Component<HTMLImageElement> {
+export default class BlockImage extends Component<HTMLImageElement> {
   private _shape: number[][];
   private _rotation_idx = 0;
   private _rotation_degree = 0;
@@ -14,7 +14,7 @@ export class BlockImage extends Component<HTMLImageElement> {
     super(id);
 
     this._shape = BLOCK_CONFIGS[id].shape;
-    this._house_loc = Utils.find_indices_2D(this._shape, Tiles.House);
+    this._house_loc = Utils.findPosition(this._shape, Tiles.House);
     this._x_offset = BLOCK_CONFIGS[id].rotation_x_offset;
 
     this.configure();
@@ -48,7 +48,7 @@ export class BlockImage extends Component<HTMLImageElement> {
 
   protected initElement(): HTMLImageElement {
     let elem = new Image();
-    elem.src = Utils.img_path(this.id);
+    elem.src = Utils.imgPath(this.id);
     return elem;
   }
 
@@ -64,11 +64,11 @@ export class BlockImage extends Component<HTMLImageElement> {
   // Rotate the image 90 degrees clock-wise
   private rotate() {
     this._rotation_idx = (this._rotation_idx + 1) % 4;
-    this._rotation_degree = Utils.rotation_degree(this._rotation_idx);
+    this._rotation_degree = Utils.rotationDegree(this._rotation_idx);
 
     this._elem.style.transform = `rotate(${this._rotation_degree}deg)`;
     this._shape = Utils.transpose(this._shape);
-    this._house_loc = Utils.find_indices_2D(this._shape, Tiles.House);
+    this._house_loc = Utils.findPosition(this._shape, Tiles.House);
   }
 
   transparentize(action: boolean) {

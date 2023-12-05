@@ -1,10 +1,13 @@
-import { autobind } from "../decorators/autobind";
-import { CellUtils } from "../utils/cell_utils";
-import { DragTarget } from "../models/drag_drop";
-import { Tiles } from "../models/tiles";
-import { EventPublisher } from "./event_publisher";
+import autobind from "../utils/autobind";
+import CellUtils from "./cell_utils";
+import { DragTarget } from "../interface/drag_drop";
+import { Tiles } from "./tiles";
+import EventPublisher from "../interface/event_publisher";
 
-export class Cell extends EventPublisher<HTMLDivElement> implements DragTarget {
+export default class Cell
+  extends EventPublisher<HTMLDivElement>
+  implements DragTarget
+{
   static EVENTS = ["dragenter", "dragleave", "drop"];
 
   private _loc: number[]; // [row, col]
@@ -96,7 +99,7 @@ export class Cell extends EventPublisher<HTMLDivElement> implements DragTarget {
     return this._elem.classList.contains("droppable");
   }
 
-  rotate_house(degree: number) {
+  rotateHouse(degree: number) {
     this._elem.style.transform = `rotate(${degree}deg)`;
   }
 }

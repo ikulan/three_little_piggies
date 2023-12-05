@@ -1,4 +1,4 @@
-import * as Button from "./components/button";
+import * as Button from "./button";
 
 export enum ButtonType {
   Previous,

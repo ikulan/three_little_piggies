@@ -1,5 +1,5 @@
-import { Block } from "./components/block";
-import { BLOCK_CONFIGS } from "./models/block_model";
+import Block from "./block";
+import { BLOCK_CONFIGS } from "./block_model";
 
 export class BlockFactory {
   static block_ids = Object.keys(BLOCK_CONFIGS);

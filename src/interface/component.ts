@@ -1,4 +1,4 @@
-export abstract class Component<T extends HTMLElement> {
+export default abstract class Component<T extends HTMLElement> {
   protected _elem: T;
 
   constructor(readonly id: string) {

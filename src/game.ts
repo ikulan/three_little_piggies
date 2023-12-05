@@ -1,9 +1,9 @@
-import { autobind } from "./decorators/autobind";
-import { Tiles } from "./models/tiles";
-import { Board } from "./components/board";
-import { BlockFactory } from "./block_factory";
-import { ButtonFactory, ButtonType } from "./button_factory";
-import { DataModel, dataStore } from "./components/data_store";
+import autobind from "./utils/autobind";
+import { Tiles } from "./board/tiles";
+import Board from "./board/board";
+import { BlockFactory } from "./block/block_factory";
+import { ButtonFactory, ButtonType } from "./button/button_factory";
+import { DataModel, dataStore } from "./utils/data_store";
 
 export class Game {
   private static instance: Game; // Singleton

@@ -1,5 +1,5 @@
-import { EventPublisher } from "./event_publisher";
-import { Utils } from "../utils/utils";
+import EventPublisher from "../interface/event_publisher";
+import Utils from "../utils/utils";
 
 export abstract class Button extends EventPublisher<HTMLButtonElement> {
   static EVENTS = ["click"];
@@ -11,7 +11,7 @@ export abstract class Button extends EventPublisher<HTMLButtonElement> {
 
     // image
     this._img_elem = new Image();
-    this._img_elem.src = Utils.img_path(this.id);
+    this._img_elem.src = Utils.imgPath(this.id);
     this._elem.appendChild(this._img_elem);
 
     // tooltip

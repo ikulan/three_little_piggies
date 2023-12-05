@@ -1,10 +1,10 @@
-import { autobind } from "../decorators/autobind";
-import { Cell } from "./cell";
-import { EventPublisher } from "./event_publisher";
-import { Tiles } from "../models/tiles";
-import { DataModel, dataStore } from "./data_store";
+import autobind from "../utils/autobind";
+import Cell from "./cell";
+import EventPublisher from "../interface/event_publisher";
+import { Tiles } from "./tiles";
+import { DataModel, dataStore } from "../utils/data_store";
 
-export class Board extends EventPublisher<HTMLDivElement> {
+export default class Board extends EventPublisher<HTMLDivElement> {
   static EVENTS = ["placeblock"];
   private blueprint: Tiles[][];
   private cells: Cell[];
@@ -74,7 +74,7 @@ export class Board extends EventPublisher<HTMLDivElement> {
 
     let cell = this.getCell(row, col)!;
     cell.type = Tiles.House;
-    cell.rotate_house(data.r_degree);
+    cell.rotateHouse(data.r_degree);
 
     for (let i = 0; i < 4; i++) {
       let n = data.cell_plan[i];

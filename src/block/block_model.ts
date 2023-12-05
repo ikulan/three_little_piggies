@@ -1,4 +1,4 @@
-import { Tiles } from "./tiles";
+import { Tiles } from "../board/tiles";
 
 interface BlockModel {
   // a matrix description for the block contents
