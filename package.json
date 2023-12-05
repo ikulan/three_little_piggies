@@ -17,6 +17,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/lodash": "^4.14.199",
+    "clean-webpack-plugin": "^4.0.0",
     "ts-loader": "^9.4.4",
     "typescript": "^5.2.2",
     "webpack": "^5.88.2",

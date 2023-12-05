@@ -1,27 +1,25 @@
-const path = require('path');
-const CleanPlugin = require('clean-webpack-plugin');
+const path = require("path");
+const CleanPlugin = require("clean-webpack-plugin");
 
 module.exports = {
-  mode: 'production',
-  entry: './src/app.ts',
+  mode: "production",
+  entry: "./src/app.ts",
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"),
   },
-  devtool: 'none',
-  module:{
+  devtool: false,
+  module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/
-      }
-    ]
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
+    ],
   },
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: [".ts", ".js"],
   },
-  plugins: [
-    new CleanPlugin.CleanWebpackPlugin()
-  ]
+  plugins: [new CleanPlugin.CleanWebpackPlugin()],
 };
