@@ -40,7 +40,7 @@ export class Board extends EventPublisher<HTMLDivElement> {
     }
   }
 
-  private valid_place(row: number, col: number) {
+  private validPlace(row: number, col: number) {
     let data: DataModel = dataStore.getData();
     const DIR = [
       [-1, 0],
@@ -51,7 +51,7 @@ export class Board extends EventPublisher<HTMLDivElement> {
 
     for (let i = 0; i < 4; i++) {
       let n = data.cell_plan[i];
-      while (n > 0) {
+      while (n >= 0) {
         let cell = this.getCell(row + n * DIR[i][0], col + n * DIR[i][1]);
         if (cell === null || cell.type !== Tiles.Empty) {
           return false;
@@ -63,7 +63,7 @@ export class Board extends EventPublisher<HTMLDivElement> {
     return true;
   }
 
-  private place_block(row: number, col: number) {
+  private placeBlock(row: number, col: number) {
     let data: DataModel = dataStore.getData();
     const DIR = [
       [-1, 0],
@@ -93,7 +93,7 @@ export class Board extends EventPublisher<HTMLDivElement> {
     // set droppable if the block can place on the cell
     if (!cell.isDroppable()) {
       let [row, col] = cell.location;
-      if (this.valid_place(row, col) === true) {
+      if (this.validPlace(row, col) === true) {
         cell.setDroppable(true);
       }
     }
@@ -103,9 +103,8 @@ export class Board extends EventPublisher<HTMLDivElement> {
   private dropCellHandler(cell: Cell) {
     if (cell.isDroppable()) {
       let [row, col] = cell.location;
-      this.place_block(row, col);
+      this.placeBlock(row, col);
       cell.setDroppable(false);
-
       this.notify("placeblock");
     }
   }

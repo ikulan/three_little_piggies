@@ -30,11 +30,11 @@ export class Cell extends EventPublisher<HTMLDivElement> implements DragTarget {
   set type(type: Tiles) {
     this._type = type;
 
+    this._elem.classList.remove(...this._elem.classList);
+    this._elem.classList.add(CellUtils.CLASS_NAME);
+
     if (type === Tiles.Invalid) {
       this._elem.classList.add(CellUtils.CLASS_INVALID);
-    } else if (type === Tiles.Empty) {
-      this._elem.classList.remove(...this._elem.classList);
-      this._elem.classList.add(CellUtils.CLASS_NAME);
     } else if (type === Tiles.Lawn) {
       this._elem.classList.add(CellUtils.CLASS_LAWN);
     } else if (type === Tiles.House) {
@@ -73,12 +73,11 @@ export class Cell extends EventPublisher<HTMLDivElement> implements DragTarget {
 
   @autobind
   dragLeaveHandler(event: DragEvent): void {
-    console.log(`dragLeave: ${this.id}`);
+    this.setDroppable(false);
   }
 
   @autobind
   dropHandler(event: DragEvent): void {
-    //console.log(event.dataTransfer.);
     if (this.isDroppable()) {
       // place the block on game board
       this.notify("drop");
@@ -87,7 +86,6 @@ export class Cell extends EventPublisher<HTMLDivElement> implements DragTarget {
 
   setDroppable(turn_on: boolean) {
     if (turn_on === true) {
-      console.log("turn on drppable");
       this._elem.classList.add("droppable");
     } else {
       this._elem.classList.remove("droppable");
