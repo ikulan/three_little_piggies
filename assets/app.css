@@ -137,6 +137,6 @@ button > img {
   color: #95aab6;
 
   &:hover {
-    color: gray;
+    color: slateblue;
   }
 }
