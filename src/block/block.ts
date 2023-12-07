@@ -1,4 +1,5 @@
 import autobind from "../utils/autobind";
+import { BLOCK_CONFIGS } from "./block_configs";
 import BlockImage from "./block_image";
 import Component from "../interface/component";
 import { DataModel, dataStore } from "../utils/data_store";
@@ -96,5 +97,18 @@ export default class Block
   reset() {
     this._image.reset();
     this._elem.classList.remove("hide");
+  }
+
+  static createBlocks(): Map<string, Block> {
+    let blocks = new Map<string, Block>();
+
+    const placement = document.getElementById("placement")!;
+    Object.keys(BLOCK_CONFIGS).forEach((bid) => {
+      let b = new Block(bid);
+      placement.appendChild(b.element);
+      blocks.set(bid, b);
+    });
+
+    return blocks;
   }
 }

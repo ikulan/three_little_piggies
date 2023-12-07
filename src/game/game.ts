@@ -1,8 +1,8 @@
 import autobind from "../utils/autobind";
 import Board from "../board/board";
+import Block from "../block/block";
 import Button from "../button/button";
 import { ButtonType } from "../button/button_configs";
-import { BlockFactory } from "../block/block_factory";
 import { ChallengeLoder } from "./challenge_loader";
 import { DataModel, dataStore } from "../utils/data_store";
 
@@ -10,7 +10,7 @@ export class Game {
   private static instance: Game; // Singleton
   private board;
   private buttons: Map<ButtonType, Button>;
-  private block_factory;
+  private blocks: Map<string, Block>;
 
   //private mode: "day" | "night";
   private challenge_id = 0;
@@ -20,7 +20,7 @@ export class Game {
     this.board.subscribe("placeblock", this.hideBlock);
 
     // blocks
-    this.block_factory = new BlockFactory();
+    this.blocks = Block.createBlocks();
 
     // buttons
     this.buttons = Button.createButtons();
@@ -40,7 +40,7 @@ export class Game {
   }
 
   private checkComplete() {
-    for (let block of this.block_factory.getAllBlocks()) {
+    for (let [id, block] of this.blocks) {
       if (!block.isHide()) return false;
     }
     return true;
@@ -49,13 +49,12 @@ export class Game {
   @autobind
   hideBlock() {
     let data: DataModel = dataStore.getData();
-    let block = this.block_factory.getBlock(data.block_id);
-    block?.hide();
+    this.blocks.get(data.block_id)?.hide();
 
     if (this.checkComplete()) {
       window.setTimeout(() => {
         confirm("Great job! 🎉🎉 Are you ready for the next challenge?")
-          ? this.reset()
+          ? this.nextGame()
           : null;
       });
     }
@@ -65,9 +64,7 @@ export class Game {
   reset() {
     this.board.reset();
 
-    for (let block of this.block_factory.getAllBlocks()) {
-      block.reset();
-    }
+    this.blocks.forEach((block) => block.reset());
   }
 
   @autobind

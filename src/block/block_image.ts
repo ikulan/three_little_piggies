@@ -1,6 +1,6 @@
 import Component from "../interface/component";
 import Utils from "../utils/utils";
-import { BLOCK_CONFIGS } from "./block_model";
+import { BLOCK_CONFIGS } from "./block_configs";
 import { Tiles } from "../board/tiles";
 
 export default class BlockImage extends Component<HTMLImageElement> {
