@@ -16,6 +16,7 @@ export class Game {
   private challenge_id = 0;
 
   constructor() {
+    this.setGameName();
     this.board = new Board(ChallengeLoder.getChallenge(this.challenge_id));
     this.board.subscribe("placeblock", this.hideBlock);
 
@@ -46,6 +47,11 @@ export class Game {
     return true;
   }
 
+  setGameName() {
+    const game_name = document.getElementById("game-name")!;
+    game_name.innerHTML = `Challenge ${this.challenge_id + 1}`;
+  }
+
   @autobind
   hideBlock() {
     let data: DataModel = dataStore.getData();
@@ -62,6 +68,7 @@ export class Game {
 
   @autobind
   reset() {
+    this.setGameName();
     this.board.reset();
     this.blocks.forEach((block) => block.reset());
   }

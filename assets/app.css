@@ -23,6 +23,13 @@ body {
   justify-content: center;
 }
 
+h3#game-name {
+  color: #a4907c;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
 #buttons {
   margin: 5px;
   padding: 20px;
@@ -42,7 +49,7 @@ button > img {
 
 button.disabled > img {
   filter: grayscale(1);
-  opacity: 0.5;
+  opacity: 0.3;
 }
 
 #placement {
