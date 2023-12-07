@@ -1,7 +1,7 @@
-import Component from "../interface/component";
-import Utils from "../utils/utils";
 import { BLOCK_CONFIGS } from "./block_configs";
-import { Tiles } from "../board/tiles";
+import { Component } from "../interface/component";
+import { Tiles } from "../game/tiles";
+import { Utils } from "../utils/utils";
 
 export default class BlockImage extends Component<HTMLImageElement> {
   private _shape: number[][];

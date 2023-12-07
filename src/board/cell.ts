@@ -1,8 +1,8 @@
-import autobind from "../utils/autobind";
-import CellUtils from "./cell_utils";
+import { autobind } from "../utils/autobind";
+import { CellUtils } from "./cell_utils";
 import { DragTarget } from "../interface/drag_drop";
-import { Tiles } from "./tiles";
-import EventPublisher from "../interface/event_publisher";
+import { Tiles } from "../game/tiles";
+import { EventPublisher } from "../interface/event_publisher";
 
 export default class Cell
   extends EventPublisher<HTMLDivElement>

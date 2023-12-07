@@ -1,4 +1,4 @@
-export default class CellUtils {
+export class CellUtils {
   static CLASS_NAME = "cell";
   static CLASS_INVALID = "invalid";
   static CLASS_PIG = "pig";

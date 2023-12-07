@@ -1,6 +1,6 @@
 import { cloneDeep } from "lodash";
 import challenges from "./challenges.json";
-import { Tiles } from "../board/tiles";
+import { Tiles } from "./tiles";
 
 export class ChallengeLoder {
   static original_blueprint = [

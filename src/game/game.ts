@@ -1,7 +1,7 @@
-import autobind from "../utils/autobind";
 import Board from "../board/board";
 import Block from "../block/block";
 import Button from "../button/button";
+import { autobind } from "../utils/autobind";
 import { ButtonType } from "../button/button_configs";
 import { ChallengeLoder } from "./challenge_loader";
 import { DataModel, dataStore } from "../utils/data_store";
@@ -63,7 +63,6 @@ export class Game {
   @autobind
   reset() {
     this.board.reset();
-
     this.blocks.forEach((block) => block.reset());
   }
 

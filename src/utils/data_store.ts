@@ -1,4 +1,4 @@
-import Component from "../interface/component";
+import { Component } from "../interface/component";
 
 export interface DataModel {
   block_id: string;

@@ -1,6 +1,6 @@
 import { ButtonType, BUTTON_CONFIGS } from "./button_configs";
-import Component from "../interface/component";
-import Utils from "../utils/utils";
+import { Component } from "../interface/component";
+import { Utils } from "../utils/utils";
 
 export default class Button extends Component<HTMLButtonElement> {
   private _img_elem: HTMLImageElement;

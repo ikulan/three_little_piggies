@@ -1,8 +1,8 @@
-import Component from "./component";
+import { Component } from "./component";
 
 type FuncArray = ((obj: Component<HTMLElement>) => void)[];
 
-export default abstract class EventPublisher<
+export abstract class EventPublisher<
   T extends HTMLElement
 > extends Component<T> {
   listeners = new Map<string, FuncArray>();

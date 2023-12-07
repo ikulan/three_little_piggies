@@ -1,5 +1,5 @@
 // autobind decorator
-export default function autobind(
+export function autobind(
   _target: any, // adding `_` in the front means this variable is not used
   _methodName: string,
   descriptor: PropertyDescriptor

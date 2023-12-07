@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-export default class Utils {
+export class Utils {
   static ROTATIONS = [0, 90, 180, 270];
 
   static rotationDegree(index: number) {

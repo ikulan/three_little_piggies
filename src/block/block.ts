@@ -1,7 +1,7 @@
-import autobind from "../utils/autobind";
-import { BLOCK_CONFIGS } from "./block_configs";
 import BlockImage from "./block_image";
-import Component from "../interface/component";
+import { autobind } from "../utils/autobind";
+import { BLOCK_CONFIGS } from "./block_configs";
+import { Component } from "../interface/component";
 import { DataModel, dataStore } from "../utils/data_store";
 import { Draggable } from "../interface/drag_drop";
 

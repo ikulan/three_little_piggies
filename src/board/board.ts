@@ -1,7 +1,7 @@
-import autobind from "../utils/autobind";
 import Cell from "./cell";
-import EventPublisher from "../interface/event_publisher";
-import { Tiles } from "./tiles";
+import { autobind } from "../utils/autobind";
+import { EventPublisher } from "../interface/event_publisher";
+import { Tiles } from "../game/tiles";
 import { DataModel, dataStore } from "../utils/data_store";
 
 export default class Board extends EventPublisher<HTMLDivElement> {
