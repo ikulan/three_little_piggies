@@ -31,11 +31,9 @@ export default class Cell
   }
 
   set type(type: Tiles) {
+    this.reset();
+
     this._type = type;
-
-    this._elem.classList.remove(...this._elem.classList);
-    this._elem.classList.add(CellUtils.CLASS_NAME);
-
     if (type === Tiles.Invalid) {
       this._elem.classList.add(CellUtils.CLASS_INVALID);
     } else if (type === Tiles.Lawn) {
@@ -101,5 +99,12 @@ export default class Cell
 
   rotateHouse(degree: number) {
     this._elem.style.transform = `rotate(${degree}deg)`;
+  }
+
+  reset() {
+    this._elem.classList.remove(...this._elem.classList);
+    this._elem.classList.add(CellUtils.CLASS_NAME);
+
+    this._elem.style.removeProperty("transform");
   }
 }
