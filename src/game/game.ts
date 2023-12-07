@@ -1,11 +1,10 @@
-import autobind from "./utils/autobind";
-import { Tiles } from "./board/tiles";
-import Board from "./board/board";
-import Button from "./button/button";
-import { ButtonType } from "./button/button_configs";
-import { BlockFactory } from "./block/block_factory";
-import { ChallengeLoder } from "./game/challenge_loader";
-import { DataModel, dataStore } from "./utils/data_store";
+import autobind from "../utils/autobind";
+import Board from "../board/board";
+import Button from "../button/button";
+import { ButtonType } from "../button/button_configs";
+import { BlockFactory } from "../block/block_factory";
+import { ChallengeLoder } from "./challenge_loader";
+import { DataModel, dataStore } from "../utils/data_store";
 
 export class Game {
   private static instance: Game; // Singleton
@@ -13,18 +12,11 @@ export class Game {
   private buttons: Map<ButtonType, Button>;
   private block_factory;
 
-  private blue_print = [
-    [Tiles.Invalid, Tiles.Empty, Tiles.Empty, Tiles.Invalid],
-    [Tiles.Empty, Tiles.Empty, Tiles.Empty, Tiles.Empty],
-    [Tiles.Pig, Tiles.Empty, Tiles.Pig, Tiles.Empty],
-    [Tiles.Invalid, Tiles.Empty, Tiles.Pig, Tiles.Empty],
-  ];
-
-  protected mode: "day" | "night";
+  //private mode: "day" | "night";
+  private challenge_id = 0;
 
   constructor() {
-    this.mode = "day";
-    this.board = new Board(this.blue_print);
+    this.board = new Board(ChallengeLoder.getChallenge(this.challenge_id));
     this.board.subscribe("placeblock", this.hideBlock);
 
     // blocks
@@ -80,12 +72,31 @@ export class Game {
 
   @autobind
   prevGame() {
-    console.log("click prev");
-    this.blue_print = ChallengeLoder.getChallenge(this.challenge_id + 1);
+    if (ChallengeLoder.hasPrev(this.challenge_id)) {
+      this.challenge_id -= 1;
+      this.board.blueprint = ChallengeLoder.getChallenge(this.challenge_id);
+      this.buttons.get(ButtonType.Next)?.enable();
+    }
+
+    this.reset();
+
+    if (!ChallengeLoder.hasPrev(this.challenge_id)) {
+      this.buttons.get(ButtonType.Previous)?.disable();
+    }
   }
 
   @autobind
   nextGame() {
-    console.log("click next");
+    if (ChallengeLoder.hasNext(this.challenge_id)) {
+      this.challenge_id += 1;
+      this.board.blueprint = ChallengeLoder.getChallenge(this.challenge_id);
+      this.buttons.get(ButtonType.Previous)?.enable();
+    }
+
+    this.reset();
+
+    if (!ChallengeLoder.hasNext(this.challenge_id)) {
+      this.buttons.get(ButtonType.Next)?.disable();
+    }
   }
 }

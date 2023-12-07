@@ -40,6 +40,11 @@ button > img {
   width: 80px;
 }
 
+button.disabled > img {
+  filter: grayscale(1);
+  opacity: 0.5;
+}
+
 #placement {
   border: 3px solid #a4907c;
   border-radius: 5px;

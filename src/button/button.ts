@@ -31,13 +31,17 @@ export default class Button extends Component<HTMLButtonElement> {
   protected configure(): void {}
 
   disable() {
-    this._elem.disabled = true;
-    this._elem.classList.add("disabled");
+    if (!this._elem.disabled) {
+      this._elem.disabled = true;
+      this._elem.classList.add("disabled");
+    }
   }
 
   enable() {
-    this._elem.disabled = false;
-    this._elem.classList.remove("disabled");
+    if (this._elem.disabled) {
+      this._elem.disabled = false;
+      this._elem.classList.remove("disabled");
+    }
   }
 
   onClick(callback: Function) {

@@ -6,16 +6,20 @@ import { DataModel, dataStore } from "../utils/data_store";
 
 export default class Board extends EventPublisher<HTMLDivElement> {
   static EVENTS = ["placeblock"];
-  private blueprint: Tiles[][];
-  private cells: Cell[];
+  private _blueprint: Tiles[][];
+  private _cells: Cell[];
 
   constructor(blueprint: Tiles[][]) {
     super("board", Board.EVENTS);
 
-    this.blueprint = blueprint;
-    this.cells = [];
+    this._blueprint = blueprint;
+    this._cells = [];
 
     this.renderCells();
+  }
+
+  set blueprint(blueprint: Tiles[][]) {
+    this._blueprint = blueprint;
   }
 
   protected initElement(): HTMLDivElement {
@@ -30,10 +34,10 @@ export default class Board extends EventPublisher<HTMLDivElement> {
       rowElem.className = "row";
 
       for (let col = 0; col < 4; col++) {
-        let cell = new Cell(row, col, this.blueprint[row][col]);
+        let cell = new Cell(row, col, this._blueprint[row][col]);
         cell.subscribe("dragenter", this.enterCellHandler);
         cell.subscribe("drop", this.dropCellHandler);
-        this.cells.push(cell);
+        this._cells.push(cell);
         rowElem.appendChild(cell.element);
       }
       this._elem.appendChild(rowElem);
@@ -112,7 +116,7 @@ export default class Board extends EventPublisher<HTMLDivElement> {
   getCell(row: number, col: number) {
     if (0 <= row && row < 4 && 0 <= col && col < 4) {
       let idx = row * 4 + col;
-      return this.cells[idx];
+      return this._cells[idx];
     }
     return null;
   }
@@ -121,7 +125,7 @@ export default class Board extends EventPublisher<HTMLDivElement> {
     for (let row = 0; row < 4; row++) {
       for (let col = 0; col < 4; col++) {
         let cell = this.getCell(row, col)!;
-        cell.type = this.blueprint[row][col];
+        cell.type = this._blueprint[row][col];
       }
     }
   }
