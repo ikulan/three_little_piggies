@@ -1,14 +1,16 @@
 import autobind from "./utils/autobind";
 import { Tiles } from "./board/tiles";
 import Board from "./board/board";
+import Button from "./button/button";
+import { ButtonType } from "./button/button_configs";
 import { BlockFactory } from "./block/block_factory";
-import { ButtonFactory, ButtonType } from "./button/button_factory";
+import { ChallengeLoder } from "./game/challenge_loader";
 import { DataModel, dataStore } from "./utils/data_store";
 
 export class Game {
   private static instance: Game; // Singleton
   private board;
-  private button_factory;
+  private buttons: Map<ButtonType, Button>;
   private block_factory;
 
   private blue_print = [
@@ -29,9 +31,12 @@ export class Game {
     this.block_factory = new BlockFactory();
 
     // buttons
-    this.button_factory = new ButtonFactory();
-    let restartBtn = this.button_factory.getButton(ButtonType.Restart);
-    restartBtn?.subscribe("click", this.reset);
+    this.buttons = Button.createButtons();
+    let previousBtn = this.buttons.get(ButtonType.Previous);
+    previousBtn?.onClick(this.prevGame);
+    previousBtn?.disable();
+    this.buttons.get(ButtonType.Restart)?.onClick(this.reset);
+    this.buttons.get(ButtonType.Next)?.onClick(this.nextGame);
   }
 
   static getInstance() {
@@ -71,5 +76,16 @@ export class Game {
     for (let block of this.block_factory.getAllBlocks()) {
       block.reset();
     }
+  }
+
+  @autobind
+  prevGame() {
+    console.log("click prev");
+    this.blue_print = ChallengeLoder.getChallenge(this.challenge_id + 1);
+  }
+
+  @autobind
+  nextGame() {
+    console.log("click next");
   }
 }

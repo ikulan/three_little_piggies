@@ -1,13 +1,13 @@
-import EventPublisher from "../interface/event_publisher";
+import { ButtonType, BUTTON_CONFIGS } from "./button_configs";
+import Component from "../interface/component";
 import Utils from "../utils/utils";
 
-export abstract class Button extends EventPublisher<HTMLButtonElement> {
-  static EVENTS = ["click"];
+export default class Button extends Component<HTMLButtonElement> {
   private _img_elem: HTMLImageElement;
   protected _span_elem: HTMLSpanElement;
 
-  constructor(id: string) {
-    super(id.toLowerCase(), Button.EVENTS);
+  constructor(id: string, tooltip: string) {
+    super(id.toLowerCase());
 
     // image
     this._img_elem = new Image();
@@ -18,6 +18,7 @@ export abstract class Button extends EventPublisher<HTMLButtonElement> {
     this._elem.className = "tooltip";
     this._span_elem = document.createElement("span");
     this._span_elem.className = "tooltiptext";
+    this._span_elem.innerHTML = tooltip;
     this._elem.appendChild(this._span_elem);
 
     this.configure();
@@ -28,24 +29,31 @@ export abstract class Button extends EventPublisher<HTMLButtonElement> {
   }
 
   protected configure(): void {}
-}
 
-export class PreviousButton extends Button {
-  protected configure(): void {
-    this._span_elem.innerHTML = "Previous Game";
+  disable() {
+    this._elem.disabled = true;
+    this._elem.classList.add("disabled");
   }
-}
-export class RestartButton extends Button {
-  protected configure(): void {
-    this._span_elem.innerHTML = "Restart";
 
-    this._elem.addEventListener("click", (e) => {
-      this.notify("click");
+  enable() {
+    this._elem.disabled = false;
+    this._elem.classList.remove("disabled");
+  }
+
+  onClick(callback: Function) {
+    this._elem.addEventListener("click", () => callback());
+  }
+
+  static createButtons(): Map<ButtonType, Button> {
+    const button_area = document.getElementById("buttons")!;
+    let buttons = new Map<ButtonType, Button>();
+
+    BUTTON_CONFIGS.forEach((config) => {
+      let button = new Button(config.name, config.tooltip);
+      buttons.set(config.type, button);
+      button_area.appendChild(button.element);
     });
-  }
-}
-export class NextButton extends Button {
-  protected configure(): void {
-    this._span_elem.innerHTML = "Next Game";
+
+    return buttons;
   }
 }
