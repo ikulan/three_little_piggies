@@ -61,6 +61,10 @@ button.disabled > img {
   align-items: center;
 }
 
+.block {
+  cursor: pointer;
+}
+
 .hide {
   /*display: none;*/
   opacity: 0%;

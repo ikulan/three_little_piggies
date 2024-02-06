@@ -32,6 +32,7 @@ export default class Block
     // Wrap the image element. Register draggable events on this wrapper element,
     // so we can successfully set rotated degree on image shadow for dragging
     this._elem.appendChild(this._image.element);
+    this._elem.classList.add('block');
 
     // Draggable
     this._elem.draggable = true;
